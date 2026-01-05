@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đồng hồ đơn giản</title>
+    <style>
+        body { text-align: center; font-family: sans-serif; padding-top: 100px; background: #f4f4f4; }
+        .timer { font-size: 60px; font-weight: bold; margin-bottom: 20px; color: #333; }
+        
+        button { 
+            padding: 10px 25px; 
+            font-size: 18px; 
+            cursor: pointer; 
+            border-radius: 5px; 
+            border: none; 
+            margin: 5px; 
+            color: white;
+            font-weight: bold;
+            transition: opacity 0.2s;
+        }
+        
+        button:hover { opacity: 0.8; }
+
+        .btn-start { background-color: #2ecc71; } 
+        .btn-stop { background-color: #f39c12; }  
+        .btn-reset { background-color: #e74c3c; }
+
+        #h, #m, #s { color: #333; }
+        #ms { color: #e74c3c; font-size: 40px; }
+    </style>
+</head>
+<body>
+
+    <div class="timer">
+        <span id="h">00</span>:<span id="m">00</span>:<span id="s">00</span>.<span id="ms">00</span>
+    </div>
+
+    <button class="btn-start" onclick="start()">Bắt đầu</button>
+    <button class="btn-stop" onclick="stop()">Dừng</button>
+    <button class="btn-reset" onclick="reset()">Đặt lại</button>
+
+    <script>
+        let gio = 0, phut = 0, giay = 0, miliGiay = 0;
+        let interval = null;
+
+        function runTimer() {
+            miliGiay++; 
+            
+            if (miliGiay > 99) { 
+                miliGiay = 0; 
+                giay++; 
+            }
+            if (giay > 59) { 
+                giay = 0; 
+                phut++; 
+            }
+            if (phut > 59) { 
+                phut = 0; 
+                gio++; 
+            }
+            capNhatGiaoDien("h", gio);
+            capNhatGiaoDien("m", phut);
+            capNhatGiaoDien("s", giay);
+            capNhatGiaoDien("ms", miliGiay);
+        }
+
+        function capNhatGiaoDien(id, giaTri) {
+            let phanTu = document.getElementById(id);
+            if (giaTri < 10) {
+                phanTu.innerHTML = "0" + giaTri;
+            } else {
+                phanTu.innerHTML = giaTri;
+            }
+        }
+
+        function start() {
+            if (interval == null) { 
+                interval = setInterval(runTimer, 10);
+            }
+        }
+
+        function stop() {
+            clearInterval(interval);
+            interval = null;
+        }
+
+        function reset() {
+            stop();
+            gio = 0; phut = 0; giay = 0; miliGiay = 0;
+            document.getElementById("h").innerHTML = "00";
+            document.getElementById("m").innerHTML = "00";
+            document.getElementById("s").innerHTML = "00";
+            document.getElementById("ms").innerHTML = "00";
+        }
+    </script>
+</body>
+</html>
